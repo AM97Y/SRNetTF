@@ -36,6 +36,7 @@ def main():
     all_g_loss = []
     all_d_loss = []
 
+    f = open("log_train_tf.txt", "a")
     with model.graph.as_default():
         init = tf.global_variables_initializer()
         with tf.Session() as sess:
@@ -62,6 +63,9 @@ def main():
                 # show loss
                 if global_step % cfg.show_loss_interval == 0 or step == 0:
                     print_log("step: {:>6d}   d_loss: {:>3.5f}   g_loss: {:>3.5f}".format(global_step, d_loss, g_loss))
+                    f.write(
+                        'Iter: {}/{} | Gen: {} | D_bg: {} | D_fus: {}\n'.format(step + 1, cfg.max_iter, g_loss.item(),
+                                                                                db_loss.item(), df_loss.item()))
 
                 # write tensorboard
                 if global_step % cfg.write_log_interval == 0:
