@@ -40,8 +40,9 @@ def main():
     with model.graph.as_default():
         init = tf.global_variables_initializer()
         gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.7)
-
-        with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        with tf.Session(config=config) as sess:
             saver = tf.train.Saver(tf.global_variables(), max_to_keep=100)
 
             # load pretrained weights or initialize variables
