@@ -39,7 +39,8 @@ def main():
     f = open("log_train_tf.txt", "a")
     with model.graph.as_default():
         init = tf.global_variables_initializer()
-        #gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.7)
+        #
+        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.7)
         config = tf.ConfigProto(gpu_options=gpu_options)
         config.gpu_options.allow_growth = True
         with tf.Session(config=config) as sess:
@@ -66,9 +67,7 @@ def main():
                 # show loss
                 if global_step % cfg.show_loss_interval == 0 or step == 0:
                     print_log("step: {:>6d}   d_loss: {:>3.5f}   g_loss: {:>3.5f}".format(global_step, d_loss, g_loss))
-                    f.write(
-                        'Iter: {}/{} | Gen: {} | D_bg: {} | D_fus: {}\n'.format(step + 1, cfg.max_iter, g_loss.item(),
-                                                                                db_loss.item(), df_loss.item()))
+                    f.write("step: {:>6d}   d_loss: {:>3.5f}   g_loss: {:>3.5f}".format(global_step, d_loss, g_loss))
 
                 # write tensorboard
                 if global_step % cfg.write_log_interval == 0:
@@ -106,8 +105,8 @@ def plot(x, y, name):
     plt.plot(y, x, 'r')
     plt.title(name)
     plt.grid(True)
-    plt.show()
-    # plt.save(f'{name}.jpg')
+    # plt.show()
+    plt.savefig(f'{name}.jpg')
 
 
 if __name__ == '__main__':
