@@ -95,18 +95,20 @@ def main():
             save_pb(sess, pb_savepath, ['o_sk', 'o_t', 'o_b', 'o_f'])
             print_log('pb model saved in dir {}'.format(pb_savepath), content_color=PrintColor['green'])
 
-    fig = plt.figure()
+    
     plot(all_g_loss, all_steps, 'g_loss')
     plot(all_d_loss, all_steps, 'd_loss')
 
 
 def plot(x, y, name):
+    fig = plt.figure()
     print(x, y)
     plt.plot(y, x, 'r')
     plt.title(name)
     plt.grid(True)
     # plt.show()
     plt.savefig(f'{name}.jpg')
+    fig.clear()
 
 
 if __name__ == '__main__':
